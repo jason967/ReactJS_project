@@ -1,24 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+
+function Food({ name, picture }) {
+  return (
+    <div>
+      <h1>I like {name}</h1>;
+      <img src={picture} />
+    </div>
+  );
+}
+
+const foodLIke = [
+  {
+    name: "space",
+    image:
+      "https://earthsky.org/upl/2020/01/Tarantula-Nebula-infrared-3-wavelengths-Spitzer-Jan-27-2020-800x450.jpg",
+  },
+];
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {foodLIke.map((cur) => (
+        <Food name={cur.name} picture={cur.image} />
+      ))}
     </div>
   );
 }
