@@ -1,30 +1,46 @@
 import React from "react";
+import axios from "axios";
+import Movie from "./Movie";
 
-function Food({ name, picture }) {
-  return (
-    <div>
-      <h1>I like {name}</h1>;
-      <img src={picture} />
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    isLoading: true,
+    movies: [],
+  };
+  getMovies = async () => {
+    const {
+      data: {
+        data: { movies },
+      },
+    } = await axios.get(
+      "https://yts-proxy.now.sh/list_movies.json?sort_by=rating"
+    );
+    this.setState({ movies, isLoading: false });
+  };
+  componentDidMount() {
+    this.getMovies();
+  }
+  render() {
+    const { isLoading, movies } = this.state;
+    return (
+      <div>
+        {isLoading
+          ? "Loading..."
+          : movies.map((movie) => {
+              console.log(movie);
+              return (
+                <Movie
+                  key={movie.id}
+                  id={movie.id}
+                  year={movie.year}
+                  title={movie.title}
+                  summary={movie.summary}
+                  poster={movie.medium_cover_image}
+                />
+              );
+            })}
+      </div>
+    );
+  }
 }
-
-const foodLIke = [
-  {
-    name: "space",
-    image:
-      "https://earthsky.org/upl/2020/01/Tarantula-Nebula-infrared-3-wavelengths-Spitzer-Jan-27-2020-800x450.jpg",
-  },
-];
-
-function App() {
-  return (
-    <div>
-      {foodLIke.map((cur) => (
-        <Food name={cur.name} picture={cur.image} />
-      ))}
-    </div>
-  );
-}
-
 export default App;
